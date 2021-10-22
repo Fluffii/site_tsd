@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ tag.name }}
+{% endblock %}
+
+{% block content_title %}
+    Новости с тегом "{{ tag.name }}":
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% for post in posts %}
+        <div class="card card-style-tag img_tag">
+            <img src="/static/img/post_image/{{ post.path }}" alt="{{ post.path }}">
+        </div>
+        <div class="card">
+            <div class="card-header">
+                {{ post.title }}
+            </div>
+            <div class="card-body">
+                <p class="card-text"> {{ post.short_description }} </p>
+                <a class="btn btn-outline-success new_green" href="{{ url_for('posts.post_detail', slug=post.slug) }}">Перейти</a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}

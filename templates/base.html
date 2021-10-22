@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}
+
+        {% endblock %} | Flask app
+    </title>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    
+       ym(83969323, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/83969323" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://redopop.com/loupe/jquery.loupe.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css')}}">
+    <link rel="shortcut icon" type="image/ico" href="{{ url_for('static', filename = 'img/favicon.ico')}}">
+    <link rel="preconnect" href="//api-maps.yandex.ru">
+    <link rel="dns-prefetch" href="//api-maps.yandex.ru">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark top_menu">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('posts.index') }}" style="margin-right: 0;"><img src="/static/img/logo.png" alt="Логотип" style="width: 195px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="{{ url_for('posts.index') }}" class="nav-link {{ 'active' if active_page == 'index' else '' }}" aria-current="page"><i class="fa fa-home" aria-hidden="true"></i> Главная</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" id="navbarDropdownMenuLink1" class="nav-link dropdown-toggle {{ 'active' if active_page in ['power', 'humus', 'moisture', 'phosphorus', 'potassium', 'pH', 'erosion', 'deflation', 'solonetzes', 'salinization', 'granulometry', 'water_resistant', 'aggregates', 'bulkweight'] else '' }}" data-bs-toggle="dropdown" role="button" aria-expanded="false">Признаки почв НСО</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
+                            <li><a href="/power " class="dropdown-item {{ 'active' if active_page == 'power' else '' }}">Мощность гумусового горизонта</a></li>
+                            <li><a href="/humus" class="dropdown-item {{ 'active' if active_page == 'humus' else '' }}">Содержание гумуса</a></li>
+                            <li><a href="/moisture" class="dropdown-item {{ 'active' if active_page == 'moisture' else '' }}">Продуктивная влага</a></li>
+                            <li><a href="/phosphorus" class="dropdown-item {{ 'active' if active_page == 'phosphorus' else '' }}">Подвижный фосфор</a></li>
+                            <li><a href="/potassium" class="dropdown-item {{ 'active' if active_page == 'potassium' else '' }}">Подвижный калий</a></li>
+                            <li><a href="/pH" class="dropdown-item {{ 'active' if active_page == 'pH' else '' }}">Кислотность</a></li>
+                            <li><a href="/erosion" class="dropdown-item {{ 'active' if active_page == 'erosion' else '' }}">Эрозия</a></li>
+                            <li><a href="/deflation" class="dropdown-item {{ 'active' if active_page == 'deflation' else '' }}">Дефляция</a></li>
+                            <li><a href="/solonetzes" class="dropdown-item {{ 'active' if active_page == 'solonetzes' else '' }}">Виды солонцов</a></li>
+                            <li><a href="/salinization" class="dropdown-item {{ 'active' if active_page == 'salinization' else '' }}">Засоление почв</a></li>
+                            <li><a href="/granulometry" class="dropdown-item {{ 'active' if active_page == 'granulometry' else '' }}">Гранулометрический состав</a></li>
+                            <li><a href="/water_resistant" class="dropdown-item {{ 'active' if active_page == 'water_resistant' else '' }}">Водопрочные агрегаты</a></li>
+                            <li><a href="/aggregates" class="dropdown-item {{ 'active' if active_page == 'aggregates' else '' }}">Структурность</a></li>
+                            <li><a href="/bulkweight" class="dropdown-item {{ 'active' if active_page == 'bulkweight' else '' }}">Равновесная плотность</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" id="navbarDropdownMenuLink2" class="nav-link dropdown-toggle {{ 'active' if active_page in ['soil_description_nso', 'maps', 'alltable'] else '' }}" data-bs-toggle="dropdown" role="button" aria-expanded="false">Почвы НСО</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <li><a href="/soil_description_nso" class="dropdown-item {{ 'active' if active_page == 'soil_description_nso' else '' }}">Описание почв</a></li>
+                            <li><a href="/maps" class="dropdown-item {{ 'active' if active_page == 'maps' else '' }}">Почвенная карта</a></li>
+                            <li><a href="/allTable" class="dropdown-item {{ 'active' if active_page == 'alltable' else '' }}">Почвенная база данных</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" id="navbarDropdownMenuLink3" class="nav-link dropdown-toggle {{ 'active' if active_page in ['maps_xoz', 'xozTable'] else '' }}" data-bs-toggle="dropdown" role="button" aria-expanded="false">Почвы хозяйства</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                            <li><a href="/maps_xoz" class="dropdown-item {{ 'active' if active_page == 'maps_xoz' else '' }}">Почвенная карта</a></li>
+                            <li><a href="/xozTable" class="dropdown-item {{ 'active' if active_page == 'xozTable' else '' }}">Почвенная база данных</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/description" class="nav-link {{ 'active' if active_page == 'description' else '' }}">О нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/contacts" class="nav-link {{ 'active' if active_page == 'contacts' else '' }}">Контакты</a>
+                    </li>
+                </ul>
+
+
+                <form class="d-flex" method="GET" action="{{ url_for('posts.index') }}">
+                    <input class="form-control me-2" type="search" placeholder="Поиск по новостям" aria-label="Search" name="q" value="{{ request.args.get('q', '') }}">
+                    <button class="btn btn-outline-success my-2 my-sm-0 new_green" type="submit">Найти</button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        {% if current_user.has_role('admin') %}
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('security.logout') }}">Выйти</a>
+                    </li>
+                    <li class="nav-item">
+                        {% else %}
+                            {% if current_user.has_role('') or current_user.has_role('user') %}
+                                <a class="nav-link" href="{{ url_for('security.logout') }}">Выйти</a>
+                            {% else %}
+                                <a class="nav-link {{ 'active' if active_page == 'login' else '' }}" href="{{ url_for('security.login') }}">Войти</a>
+                            {% endif %}
+                    </li>
+                        {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="{{ 'container-fluid' if active_page in ['maps_xoz', 'index'] else 'container' }}" style="min-height: 70%;">
+        <div class="col-xs-4">
+            <h1>
+                {% block content_title %}
+
+                {% endblock %}
+            </h1>
+            <div class="content">
+                    {% block content %}
+
+                    {% endblock %}
+                <br><br>
+            </div>
+        </div>
+    </div>
+
+    <!--    Подвал сайта-->
+    <footer class="footer">
+        <div class="navbar-fixed-bottom row-fluid">
+            <div class="container-fluid">
+                <div class="row footer-row">
+                    <div class="col-md-3 col-sm-6 col-xs-12 segment-one md-mb-30 sm-mb-30">
+                        <h3>Кратко о нас</h3>
+                        <p>Федеральное государственное бюджетное учреждение науки Сибирский федеральный научный центр агробиотехнологий
+                            Российской академии наук является научной организацией</p>
+                        <div class="dopinfa">
+                            <p>12+<br>
+                            Пресслужба sr-primo@rambler.ru<br> +7 (383) 348-48-02<br>
+                            Служба техподдержки alex.typeface@gmail.com</p>
+                            <a href="{{ url_for('posts.index') }}">
+                                <img src="/static/img/logo.png" alt="Логотип" style="width: 195px;">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 segment-two md-mb-30 sm-mb-30">
+                        <h2>Мы на карте</h2>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15425.6013259722!2d82.97613910810253!3d54.91995697474638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42dfdd4b46fb56e9%3A0x28174d00358acc5b!2z0KHQuNCx0LjRgNGB0LrQuNC5INGE0LXQtNC10YDQsNC70YzQvdGL0Lkg0L3QsNGD0YfQvdGL0Lkg0YbQtdC90YLRgCDQsNCz0YDQvtCx0LjQvtGC0LXRhdC90L7Qu9C-0LPQuNC5INCg0JDQnSAo0KHQpNCd0KbQkCDQoNCQ0J0p!5e0!3m2!1sru!2sus!4v1555827126591!5m2!1sru!2sus" width="100%" height="344" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 segment-four sm-mb-30">
+                        <h2>Напишите нам</h2>
+                        <form action="/feedback" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="feedback_name" placeholder="Имя" class="form-control mb-2"><br>
+                                <input type="email" name="feedback_email" placeholder="E-mail" class="form-control mb-2"><br>
+                                <textarea class="form-control mb-2" cols="30" name="feedback_message" placeholder="Сообщение"
+                                          rows="5"></textarea><br>
+                            </div>
+                            <input type="submit" value="Отправить" class="btn btn-outline-success form-control new_green">
+                        </form>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 segment-three md-mb-30 sm-mb-30">
+                        <h2>Контакты</h2>
+                        <p><i class="fa fa-map-marker fa-1x" style="color: #2FBA2F" aria-hidden="true" title="Адрес" ></i> Новосибирская область, Новосибирский район, р.п. Краснообск, 630501</p>
+                        <p><i class="fa fa-phone fa-1x" style="color: #2FBA2F" aria-hidden="true" title="Телефон"></i> +7 (383) 348-14-40</p>
+                        <p><i class="fa fa-fax fa-1x" style="color: #2FBA2F" aria-hidden="true" title="Факс"></i> +7 (383) 348-46-36</p>
+                        <p><i class="fa fa-globe fa-1x" style="color: #2FBA2F" aria-hidden="true" title="Сайт"></i> <a href="https://sfsca.ru" class="pai">sfsca.ru</a></p>
+                        <p><i class="fa fa-envelope fa-1x" style="color: #2FBA2F" aria-hidden="true" title="e-mail"></i> <a href="mailto:so.prezidium@yandex.ru" class="pai">so.prezidium@yandex.ru</a></p>
+                        <p><i class="fab fa-vk fa-1x" style="color: #2FBA2F" aria-hidden="true" title="Вконтакте"></i> <a href="https://vk.com/isit_2020_ai" class="pai">ИСИТ</a></p>
+                        <div class="logo-badge">
+                            <a href="https://vk.com/sfscaras" class="pai">
+                                <i class="fab fa-vk fa-2x" aria-hidden="true" title="СФНЦА РАН Вконтакте"></i>
+                            </a>
+                            <a href="https://www.instagram.com/sfscaras/" class="pai">
+                                <i class="fab fa-instagram fa-2x" aria-hidden="true" title="СФНЦА РАН Instagram"></i>
+                            </a>
+                            <a href="https://www.youtube.com/channel/UCcu2L7Xl7HWiYKqwC9wGdIQ" class="pai">
+                                <i class="fab fa-youtube fa-2x" aria-hidden="true" title="СФНЦА РАН YouTube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="footer-bottom-text">
+            &copy; 2019-2021 СФНЦА РАН
+        </p>
+        
+        <!-- Проект разработан студенткой Николаевой Анной Алексеевной -->
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&coordorder=longlat&amp;apikey=<f33d4541-00c5-47b0-9ae2-04f7a1091e8d>" type="text/javascript"></script>
+
+    {% block js_func %}
+        <script type="text/javascript" src="{{ url_for('static', filename='fontawesome-free-5.15.2-web/js/all.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+        <df-messenger
+          chat-title="TheSoilDatabase"
+          agent-id="c4f9c17f-1cf7-420a-80f0-b1c58a9ee638"
+          language-code="ru"
+        ></df-messenger>
+    {% endblock %}
+</body>
+</html>
